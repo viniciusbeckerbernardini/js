@@ -1,45 +1,112 @@
 class CalcController{
 	
+	/* 
+	Criando o construtor da classe CalcController, tudo que está dentro dele será executado 
+	ao instânciar a classe
+	*/
 	constructor(){
-
-		this._displayCalc = "0";
+		// EL = Convenção de element
+		// this se refere a esta instância
+		this._locale = 'pt-br';
+		this._displayCalcEl = document.querySelector("#display");
+		this._dateEl = document.querySelector("#data");
+		this._timeEl = document.querySelector("#hora");
 		this._currentDate;
-		this.initialize();
-
+		this.initialize();		
+		this.initButtonsEvents();
 	}
 
 	initialize(){
-		// Let = Defini variáveis dentro do escopo
-		// EL = Convenção de element
-		let displayCalcEl = document.querySelector("#display");
-		let dateEl = document.querySelector("#data");
-		let timeEl = document.querySelector("#hora");
-
-		/*
+		/* Let = Defini variáveis dentro do escopo
+		let dateEl = document.querySelectior("#data");
+		
 		Inner HTML insere é uma propriedade para manipular o dom, 
 		ele pega o objeto e insere uma informação dentro dele substituindo uo agregando a atual.
 		A informação é passada no formato html.
-		*/
-		// Agregando
-		// displayCalcEl.innerHTML += "45654";
-		// Substitiundo
+		
+		Agregando
+		displayCalcEl.innerHTML += "45654";
+		Substitiundo
 		displayCalcEl.innerHTML = "4567";
-		dateEl.innerHTML = "19/09/2018";
-		timeEl.innerHTML = "13:10";
+		*/
+		// setInterval executa uma ação entre um determinado espaço de tempo
+		// Iniciando a função para mostrar o tempo e a data
+		this.setDisplayDateTime();
+		// Criando um setInterval para que a função continue a ser executada de segundo em segundo
+		let interval = setInterval(()=>{
+			this.setDisplayDateTime();
+		}, 1000);
+
+		// setTimeout termina uma ação depois de um determinado espaço de tempo
+		/* 
+		setTimeout(()=>{
+		 	clearInterval(interval);
+		},10000);
+		*/
+	}
+	// Criando a função para 
+	initButtonsEvents(){
+		// Traz o primeiro resultado
+		// document.querySelector("#buttons > g, #parts > g")
+		// Traz todos os resultados
+		let buttons = document.querySelectorAll("#buttons > g, #parts > g");
+		// Usando o foreach para percorrer cada item da lista
+		buttons.forEach(/*Btn será o parametro que que receberá a informação de cada item*/btn =>{
+			// Usando o event listener para ouvir a chamada de algum evento, no caso, o de click
+			btn.addEventListener('click',e =>{
+				// Imprimindo no console o nome da classe do botão já retirando a palavra btn-
+				console.log(btn.className.baseVal.replace("btn-",""));
+			});
+		});
 	}
 
+
+	setDisplayDateTime(){
+		// Definindo que o displayDate vai receber a data padrão pt br com o mês por extenso
+		this.displayDate = this.currentDate.toLocaleDateString(this._locale,{
+			day:'2-digit',
+			month: 'long',
+			year: 'numeric'
+		});
+		// Definindo que o displayTime vai receber a hora no padrão pt-br
+		this.displayTime = this.currentDate.toLocaleTimeString(this._locale);	
+	}
+
+	// Get display time para recuperar as informações que foram inseridas nele
+	get displayTime(){
+		return this._timeEl.innerHTML;
+	}
+	// Set display time para inserir informações nele
+	set displayTime(value){
+		this._timeEl.innerHTML = value;
+	}
+	
+	// Get display date para recuperar as informações que foram inseridas nele
+	get displayDate(){
+		return this._dateEl.innerHTML;
+	}
+	
+	// Set display date para inserir informações nele
+	set displayDate(value){
+		this._dateEl.innerHTML = value;
+	}
+	
+	// Get display Calc para recuperar as informações que foram inseridas nele
 	get displayCalc(){
-		return this._displayCalc;
+		return this._displayCalcEl.innerHTML;
 	}
 
+	// Set display Calc para inserir informações nele
 	set displayCalc(value){
-		this._displayCalc = value;
+		this._displayCalcEl.innerHTML = value;
 	}
-
+	
+	// Get current date current date para recuperar as informações que foram inseridas nele
 	get currentDate(){
-		return this._currentDate;
+		return new Date();
 	}
 
+	// Set current date current date para inserir informações nele
 	set currentDate(value){
 		this._currentDate = value;
 	}
