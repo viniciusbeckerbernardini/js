@@ -7,6 +7,7 @@ class CalcController{
 	constructor(){
 		// EL = Convenção de element
 		// this se refere a esta instância
+		this._operation = [];
 		this._locale = 'pt-br';
 		this._displayCalcEl = document.querySelector("#display");
 		this._dateEl = document.querySelector("#data");
@@ -44,6 +45,76 @@ class CalcController{
 		},10000);
 		*/
 	}
+	addEventListenerAll(element, events, fn){
+
+		events.split(' ').forEach(event => {
+			element.addEventListener(event, fn, false);
+		});
+
+	}
+
+	setError(){
+		this.displayCalc = "Error";
+	}
+
+	clearAll(value){
+		this._operation = [];
+	}
+
+	clearEntry(){
+		this._operation.pop();
+	}
+
+	addOperation(value){
+		this._operation.push(value);
+		console.log(this._operation);
+	}
+
+	execBtn(value){
+		switch (value) {
+			case 'ac':
+			
+			break;
+			case 'ce':
+			
+			break;
+			case 'soma':
+			
+			break;
+			case 'subtracao':
+			
+			break;
+			case 'divisao':
+
+			break;
+			case 'multiplicacao':
+
+			break;
+			case 'porcento':
+			
+			break;
+			case 'igual':
+
+			break;
+			case '0':
+			case '1':
+			case '2':
+			case '3':
+			case '4':
+			case '5':
+			case '6':
+			case '7':
+			case '8':
+			case '9':
+			this.addOperation(parseInt(value));
+			break;
+			default:
+				console.log(value);
+				this.setError();
+				break;
+			}
+		}
+
 	// Criando a função para 
 	initButtonsEvents(){
 		// Traz o primeiro resultado
@@ -53,9 +124,16 @@ class CalcController{
 		// Usando o foreach para percorrer cada item da lista
 		buttons.forEach(/*Btn será o parametro que que receberá a informação de cada item*/btn =>{
 			// Usando o event listener para ouvir a chamada de algum evento, no caso, o de click
-			btn.addEventListener('click',e =>{
+			this.addEventListenerAll(btn,'click drag',e =>{
 				// Imprimindo no console o nome da classe do botão já retirando a palavra btn-
 				console.log(btn.className.baseVal.replace("btn-",""));
+				let textButton = btn.className.baseVal.replace("btn-","");
+
+				this.execBtn(textButton);
+			});
+
+			this.addEventListenerAll(btn, "mouseover mouseup mousedown", e=>{
+				btn.style.cursor = "pointer";
 			});
 		});
 	}
